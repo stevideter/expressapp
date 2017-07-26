@@ -5,17 +5,22 @@ var app = express();
 var port = process.env.PORT || 5000;
 
 app.use(express.static('public'));
+app.set('views', 'src/views');
 
-app.use(express.static('src/views'));
-app.get('/', function(req, res){
-    res.send('Hi from Express');
+app.set('view engine', 'ejs');
+
+app.get('/', function (req, res) {
+    res.render('index', {
+        list: ['a', 'e', 'i', 'o', 'u', 'sometimes y'],
+        title: 'my title',
+    });
 });
 
-app.get('/books', function(req, res){
+app.get('/books', function (req, res) {
     res.send('Books be here');
 });
 
-app.listen(port, function(err) {
+app.listen(port, function (err) {
     console.log('running on port ' + port);
 
 });
