@@ -14,7 +14,10 @@ var nav = [
         ];
 
 var bookRouter = require('./src/routes/bookRoutes')(nav);
+var adminRouter = require('./src/routes/adminRoutes')(nav);
+
 app.use('/Books', bookRouter);
+app.use('/Admin', adminRouter);
 
 app.get('/', function (req, res) {
     res.render('index', {

@@ -1,45 +1,59 @@
 var express = require('express');
 var bookRouter = express.Router();
+var mongodb = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 
 var router = function(nav) {
+    var url = 'mongodb://localhost:27017/libraryApp';
 
-    var books = [
-        {
-            title: 'Fight Club',
-            genre: 'Fiction',
-            author: 'Chuck Palahniuk',
-            read: true
-        },
-        {
-            title: 'American Gods',
-            genre: 'Fiction',
-            author: 'Neil Gaiman',
-            read: true
-        },
-        {
-            title: 'Something else',
-            genre: 'Fiction',
-            author: 'Someone Else',
-            read: false
-        }
-    ];
     bookRouter.route('/')
         .get(function (req, res) {
-            res.render('books', {
-                nav: nav,
-                title: 'My books',
-                books: books
-            });
+            mongodb.connect(url, function(err, db) {
+                    if (err) {
+                        res.status('404').send('cannot get books! ' + err.message);
+                    } else {
+                        var collection = db.collection('books');
+                        collection.find({}).toArray(function(err, results) {
+                            if (err) {
+                                res.status('404').send('cannot get books! ' + err.message);
+                            } else {
+                                res.render('books', {
+                                    nav: nav,
+                                    title: 'My books',
+                                    books: results
+                                });
+                            }
+                            db.close();
+                        });
+                    }
+                });
         });
     bookRouter.route('/:id')
+        .all(function(req, res, next) {
+            var bookId = new ObjectId(req.params.id);
+            mongodb.connect(url, function(err, db) {
+                    if (err) {
+                        res.status('404').send('cannot get book! ' + err.message);
+                    } else {
+                        var collection = db.collection('books');
+                        collection.findOne({'_id': bookId}, function(err, results) {
+                            if (err) {
+                                res.status('404').send('cannot get book! ' + err.message);
+                            } else {
+                                req.book = results;
+                                next();
+                            }
+                            db.close();
+                        });
+                    }
+                });
+        })
         .get(function (req, res) {
-            var bookId = req.params.id;
-            var book = books[bookId];
             res.render('book', {
                 nav: nav,
-                title: book.title,
-                book: book,
-                id: bookId
+                title: req.book.title,
+                book: req.book,
+                id: req.params.id
             });
         });
     return bookRouter;
