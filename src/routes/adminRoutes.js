@@ -6,19 +6,22 @@ var books = [
         title: 'Fight Club',
         genre: 'Fiction',
         author: 'Chuck Palahniuk',
-        read: true
+        read: true,
+        bookId: 5759
     },
     {
         title: 'American Gods',
         genre: 'Fiction',
         author: 'Neil Gaiman',
-        read: true
+        read: true,
+        bookId: 30165203
     },
     {
-        title: 'Something else',
+        title: 'The Poisonwood Bible',
         genre: 'Fiction',
-        author: 'Someone Else',
-        read: false
+        author: 'Barbara Kingsolver',
+        read: false,
+        bookId: 7244
     }
 ];
 

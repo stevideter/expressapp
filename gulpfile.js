@@ -12,7 +12,7 @@ gulp.task('style', function() {
         .pipe(jscs());
 });
 
-gulp.task('inject', function(){
+gulp.task('inject', function() {
     var wiredep = require('wiredep').stream;
     var inject = require('gulp-inject');
 
@@ -35,7 +35,7 @@ gulp.task('inject', function(){
         .pipe(gulp.dest('./src/views'));
 });
 
-gulp.task('serve', ['style', 'inject'], function(){
+gulp.task('serve', ['style', 'inject'], function() {
     var options = {
         script: 'app.js',
         delayTime: 1,
@@ -45,7 +45,7 @@ gulp.task('serve', ['style', 'inject'], function(){
         watch: jsFiles
     };
     return nodemon(options)
-        .on('restart', function(ev){
+        .on('restart', function(ev) {
             console.log('Restarting...');
         });
 });

@@ -20,7 +20,8 @@
     "express-session": "^1.15.4",
     "mongodb": "^2.2.30",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "bower": "^1.8.0",
